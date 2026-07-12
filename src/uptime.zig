@@ -49,7 +49,7 @@ fn humanTime(seconds: u64, buf: []u8) ![]u8 {
     return buf[0..index];
 }
 
-fn uptime(io: Io, buf: []u8) ![]u8 {
+pub fn uptime(io: Io, buf: []u8) ![]u8 {
     const total_seconds = try uptimeSeconds(io);
     return humanTime(total_seconds, buf);
 }
