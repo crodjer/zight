@@ -63,7 +63,7 @@ pub fn main(init: std.process.Init) !void {
     switch (command) {
         .help => { try printHelp(stdout_writer); },
         .version => { try stdout_writer.writeAll(zight.VERSION ++ "\n"); },
-        .run => { try zight.run(stdout_writer); }
+        .run => { try zight.run(io, stdout_writer); }
     }
 
     try stdout_writer.flush(); // Don't forget to flush!
