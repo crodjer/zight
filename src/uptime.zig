@@ -20,29 +20,37 @@ fn uptimeSeconds(io: Io) !u64 {
     return try std.fmt.parseInt(u64, data[0..end], 10);
 }
 
+const TimeUnit = struct {
+    seconds: u64,
+    suffix: []const u8
+};
+
 fn humanTime(seconds: u64, buf: []u8) ![]u8 {
     var rem = seconds;
-    const mo = rem / 2592000;   rem %= 2592000;
-    const d = rem / 86400;      rem %= 86400;
-    const h = rem / 3600;       rem %= 3600;
-    const m = rem / 60;         rem %= 60;
-    const s = rem;
 
     var index: usize = 0;
-    const units = .{
-        .{ mo, "mo" },
-        .{ d, "d" },
-        .{ h, "h" },
-        .{ m, "m" },
-        .{ s, "s" },
+    var unit_count: u4 = 0;
+
+    const units = [_]TimeUnit{
+        .{ .seconds = 2592000,  .suffix = "mo" },
+        .{ .seconds = 86400,    .suffix = "d" },
+        .{ .seconds = 3600,     .suffix = "h" },
+        .{ .seconds = 60,       .suffix = "m" },
+        .{ .seconds = 1,        .suffix = "s" },
     };
 
     inline for (units) |unit| {
-        if (unit[0] > 0) {
+        if (unit_count >= 2) {
+            break;
+        }
+        const count = rem / unit.seconds;
+        rem %= unit.seconds;
+        if (count > 0) {
             const p = try std.fmt.bufPrint(buf[index..], "{d}{s}", .{
-                unit[0], unit[1],
+                count, unit.suffix,
             });
             index += p.len;
+            unit_count += 1;
         }
     }
 
