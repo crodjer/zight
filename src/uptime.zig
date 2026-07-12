@@ -54,8 +54,23 @@ fn uptime(io: Io, buf: []u8) ![]u8 {
     return humanTime(total_seconds, buf);
 }
 
+test "uptime" {
+    const io = std.testing.io;
+    var test_buff: [64]u8 = undefined;
+    const uptime_string = try uptime(io, &test_buff);
+
+    try std.testing.expect(uptime_string.len > 2);
+}
+
 test "humanTime" {
+    var test_buff: [64]u8 = undefined;
     try std.testing.expectEqualStrings("45s", try humanTime(45, &test_buff));
-    try std.testing.expectEqualStrings("3d4h", try humanTime(3 * 86400 + 4 * 3600, &test_buff));
-    try std.testing.expectEqualStrings("2h15m", try humanTime(2 * 3600 + 15 * 60, &test_buff));
+    try std.testing.expectEqualStrings(
+        "3d4h",
+        try humanTime(3 * 86400 + 4 * 3600, &test_buff)
+    );
+    try std.testing.expectEqualStrings(
+        "2h15m",
+        try humanTime(2 * 3600 + 15 * 60, &test_buff)
+    );
 }
