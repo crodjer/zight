@@ -2,15 +2,22 @@
 const std = @import("std");
 const Io = std.Io;
 const uptime = @import("uptime.zig");
+const memory = @import("memory.zig");
 
 pub const VERSION = "0.0.1";
 
 /// Run `zight` and generate the one line system snapshot.
 pub fn run(io: Io, writer: *Io.Writer) !void {
     var uptime_buff: [64]u8 = undefined;
-    try writer.print("Up:{s}", .{try uptime.uptime(io, &uptime_buff)});
+    var memory_buff: [8]u8 = undefined;
+
+    try writer.print("Up:{s} M: {s}\n", .{
+        try uptime.uptime(io, &uptime_buff),
+        try memory.memory(io, &memory_buff)
+    });
 }
 
 test {
     _ = @import("uptime.zig");
+    _ = @import("memory.zig");
 }
