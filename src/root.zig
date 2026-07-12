@@ -62,3 +62,10 @@ pub fn run(io: Io, writer: *Io.Writer) !void {
     var uptime_buff: [64]u8 = undefined;
     try writer.print("Up:{s}", .{try uptime(io, &uptime_buff)});
 }
+
+test "humanTime" {
+    var test_buff: [64]u8 = undefined;
+    try std.testing.expectEqualStrings("45s", try humanTime(45, &test_buff));
+    try std.testing.expectEqualStrings("3d4h", try humanTime(3 * 86400 + 4 * 3600, &test_buff));
+    try std.testing.expectEqualStrings("2h15m", try humanTime(2 * 3600 + 15 * 60, &test_buff));
+}
