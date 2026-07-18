@@ -11,9 +11,9 @@ pub fn run(io: Io, writer: *Io.Writer) !void {
     var uptime_buff: [64]u8 = undefined;
     var memory_buff: [8]u8 = undefined;
 
-    try writer.print("Up:{s} M: {s}\n", .{
-        try uptime.uptime(io, &uptime_buff),
-        try memory.memory(io, &memory_buff)
+    try writer.print("M:{s} Up:{s}\n", .{
+        try memory.memory(io, &memory_buff),
+        try uptime.uptime(io, &uptime_buff)
     });
 }
 

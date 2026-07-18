@@ -5,9 +5,9 @@ const MemoryInfo = struct {
     total: u64,
     available: u64,
 
-    fn usage(mem_info: MemoryInfo) f32 {
-        const used: f32 = @floatFromInt(mem_info.total - mem_info.available);
-        return 100 * used / @as(f32, @floatFromInt(mem_info.total));
+    fn usage(mem_info: MemoryInfo) u8 {
+        const used = mem_info.total - mem_info.available;
+        return @intCast((100 * used) / mem_info.total);
     }
 };
 
@@ -41,7 +41,7 @@ fn memoryInfo(io: Io) !MemoryInfo {
 
 pub fn memory(io: Io, buf: []u8) ![]u8 {
     const info = try memoryInfo(io);
-    return try std.fmt.bufPrint(buf, "{d:0.2}%", .{ info.usage(), });
+    return try std.fmt.bufPrint(buf, "{d}%", .{ info.usage(), });
 }
 
 test "memoryUsage" {
