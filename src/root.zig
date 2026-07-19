@@ -6,7 +6,7 @@ const memory = @import("memory.zig");
 const temp = @import("temp.zig");
 const cpu = @import("cpu.zig");
 
-pub const VERSION = "0.1.0";
+pub const VERSION = "0.1.2";
 
 /// Run `zight` and generate the one line system snapshot.
 pub fn run(io: Io, writer: *Io.Writer) !void {
