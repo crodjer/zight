@@ -6,7 +6,7 @@ CPU / Memory usage, thermals and uptime in 1 line.
 
 ```shell
 $ zight
-C:2% M:13% T:50 Up:12d14h
+C:2% M:13% T:50°C Up:12d15h
 ```
 
 ## Download

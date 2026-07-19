@@ -37,7 +37,7 @@ fn maxTemp(io: Io) !?u32 {
 
 pub fn temp(io: Io, buf:[]u8) ![]u8 {
     if (try maxTemp(io)) |t| {
-        return try std.fmt.bufPrint(buf, "{d}", .{ t });
+        return try std.fmt.bufPrint(buf, "{d}°C", .{ t });
     } else {
         return try std.fmt.bufPrint(buf, "N/A", .{});
     }
