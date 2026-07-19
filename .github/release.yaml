@@ -1,0 +1,41 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: master
+
+      - name: Build Binaries
+        run: |
+          zig build -Dtarget=x86_64-linux -Doptimize=ReleaseSmall
+          mv zig-out/bin/zight zight-x86_64-linux
+
+          zig build -Dtarget=aarch64-linux -Doptimize=ReleaseSmall
+          mv zig-out/bin/zight zight-aarch64-linux
+
+          zig build -Dtarget=arm-linux-gnueabihf -Doptimize=ReleaseSmall
+          mv zig-out/bin/zight zight-arm-linux-gnueabihf
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            zight-x86_64-linux
+            zight-aarch64-linux
+            zight-arm-linux-gnueabihf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
